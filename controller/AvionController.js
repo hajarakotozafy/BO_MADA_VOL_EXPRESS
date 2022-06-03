@@ -1,19 +1,19 @@
 const connection = require('./connection');
-const asyncHandler = require('express-async-handler');
 
 // @desc    Get Avions
 // @route   GET /api/avion
 // @access  Private
-const getAvion = asyncHandler(async (req, res) => {
-    const result = await connection.query('SELECT * FROM avion', (err, rows) => {
+const getAvion = (req, res) => {
+    console.log("HELLO")
+    connection.query('SELECT * FROM avion', (err, rows) => {
         if (err) {
             throw err
         } else {
-            return rows;
+            res.status(200).send(rows);
         }
     });
-    res.status(200).json(result);
-});
+
+};
 
 // @desc    Get Specific Avion
 // @route   GET /api/avion/:id

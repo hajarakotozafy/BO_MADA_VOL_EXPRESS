@@ -19,4 +19,4 @@ app.use('/api/reservation', reservationRoutes);
 app.use('/api/Com', BoRoutes);
 
 
-app.listen(port, () => console.log(`Server listening on port ${port}... \nLe point d'entrer est: "http://127.0.0.1:3000/api/" suivi du route que vous voulez acceder`))
+app.listen(3001, () => console.log(`Server listening on port 3001... \nLe point d'entrer est: "http://127.0.0.1:3001/api/" suivi du route que vous voulez acceder`))
