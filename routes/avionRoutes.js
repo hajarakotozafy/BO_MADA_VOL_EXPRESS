@@ -5,18 +5,8 @@ const { getAvion, getSpecificAvion, addAvion, deleteAvion, putAvion } = require(
 
 const router = express.Router();
 
-router.route('/').get(getAvion).post((req, res) => {
-    const { error } = validateAvion(req.body);
-    if (error) return res.status(400).send(error);
+router.route('/').get(getAvion).post(addAvion);
 
-    addAvion(req, res);
-});
-
-router.route('/:id').get(getSpecificAvion).put((req, res) => {
-    const { error } = validateAvion(req.body);
-    if (error) return res.status(400).send(error);
-
-    putAvion(req, res)
-}).delete(deleteAvion);
+router.route('/:id').get(getSpecificAvion).put(putAvion).delete(deleteAvion);
 
 module.exports = router;

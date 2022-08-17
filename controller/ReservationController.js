@@ -1,14 +1,26 @@
 const connection = require('./connection');
 
+const getReservation = (req, res) => {
+    console.warn({METHOD: 'GET', ROUTE:'reservation'});
+    connection.query('SELECT * FROM reservation WHERE status = 0 order BY numReservation DESC', (err, rows) => {
+        if (err) {
+            throw err
+        } else {
+            res.status(200).send(rows);
+        }
+    });
+
+};
+
 const addReservation = (req, res) => {
     //validation des données
-    connection.query("INSERT INTO reservation (numVol, numAvion, numPlace, dateReservation, nomVoyageur, status) VALUES (?,?,?,NOW(),?,0)",
-        [req.body.numVol, req.body.numAvion, req.body.numPlace, req.body.nomVoyageur],
+    connection.query("INSERT INTO reservation (numVol, numAvion, numPlace, dateReservation, nomVoyageur, status) VALUES (?,(SELECT numAvion FROM avion WHERE numVol = ?),?,NOW(),?,0)",
+        [req.body.numVol, req.body.numVol, req.body.numPlace, req.body.nomVoyageur],
         (err, rows) => {
             if (err) throw err
             else {
-                connection.query("UPDATE place SET Occupation = 1 WHERE numAvion = ? AND numPlace = ?",
-                    [req.body.numAvion, req.body.numPlace],
+                connection.query("UPDATE place SET Occupation = 1 WHERE numAvion = (SELECT numAvion FROM avion WHERE numVol = ?) AND numPlace = ?",
+                    [req.body.numVol, req.body.numPlace],
                     (err, result) => {
                         if (err) throw err
                         else {
@@ -46,5 +58,6 @@ const cancelReservation = (req, res) => {
 
 module.exports = {
     addReservation,
-    cancelReservation
+    cancelReservation,
+    getReservation
 }

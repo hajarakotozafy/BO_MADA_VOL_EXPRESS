@@ -33,14 +33,14 @@ const addVol = (req, res) => {
     /**
      * tsy tokony hitovy heureDepart ny vol de même trajectoire
      */
-
+	const hD = req.body.dateDepart + " " + req.body.heureDepart;
     connection.query(`INSERT INTO vol (villeDepart, villeArrivee, heureDepart, frais) VALUES (?,?,?,?)`,
-        [req.body.villeDepart, req.body.villeArrivee, req.body.heureDepart, req.body.frais],
+        [req.body.villeDepart, req.body.villeArrivee, hD, req.body.frais],
         (err, result) => {
             if (err) throw err
             else {
                 connection.query("SELECT numVol FROM vol WHERE villeDepart = ? AND villeArrivee = ? AND heureDepart = ? AND frais = ?",
-                    [req.body.villeDepart, req.body.villeArrivee, req.body.heureDepart, req.body.frais],
+                    [req.body.villeDepart, req.body.villeArrivee, hD, req.body.frais],
                     (err, rows) => {
                         if (err) throw err
                         else {
@@ -85,6 +85,7 @@ const deleteVol = (req, res) => {
 }
 
 const putVol = (req, res) => {
+const hD = req.body.dateDepart + " " + req.body.heureDepart;
     connection.query("SELECT * FROM vol WHERE numVol = ?",
         [req.params.id],
         (err, result) => {
@@ -94,8 +95,8 @@ const putVol = (req, res) => {
 
                 //Validation des données
 
-                connection.query("UPDATE vol SET villeDepart = ?, villeArrivee = ?, heureDepart = ?, frais = ?",
-                    [req.body.villeDepart, req.body.villeArrivee, req.body.heureDepart, req.body.frais],
+                connection.query("UPDATE vol SET villeDepart = ?, villeArrivee = ?, heureDepart = ?, frais = ? WHERE numVol = ?",
+                    [req.body.villeDepart, req.body.villeArrivee, hD, req.body.frais, req.params.id],
                     (err, rows) => {
                         if (err) throw err
                         else {

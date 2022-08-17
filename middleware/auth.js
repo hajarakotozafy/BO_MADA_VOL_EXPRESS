@@ -18,7 +18,7 @@ const login = (req, res) => {
     }
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    res.send({ accessToken, refreshToken });
+    res.send(user);
 }
 
 const authenticateToken = (req, res, next) => {

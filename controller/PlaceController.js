@@ -1,10 +1,13 @@
 const connection = require('./connection.js')
 
 const getPlaces = (req, res) => {
-    connection.query("SELECT * FROM place",
+    connection.query("SELECT * FROM place WHERE Occupation = 0 AND numAvion = (SELECT numAvion FROM avion WHERE numVol = ?)", [req.params.id],
         (err, rows) => {
             if (err) throw err
-            else res.status(200).send(rows)
+            else {
+		console.log({rows})
+                res.status(200).send(rows)
+            }
         })
 }
 

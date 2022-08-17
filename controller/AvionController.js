@@ -5,7 +5,7 @@ const connection = require('./connection');
 // @access  Private
 const getAvion = (req, res) => {
     console.log("HELLO")
-    connection.query('SELECT * FROM avion', (err, rows) => {
+    connection.query('SELECT * FROM avion order BY numAvion DESC', (err, rows) => {
         if (err) {
             throw err
         } else {
@@ -110,8 +110,8 @@ const putAvion = (req, res) => {
             if (err) throw err
             else if (!result[0]) return res.status(404).send("avion not found");
             else {
-                connection.query("UPDATE avion SET designation = ?, nbPlaces = ? , numVol = ? WHERE numAvion = ?",
-                    [req.body.designation, req.body.nbPlaces, req.body.numVol, req.params.id],
+                connection.query("UPDATE avion SET designation = ?, nbPlaces = ? WHERE numAvion = ?",
+                    [req.body.designation, req.body.nbPlaces, req.params.id],
                     (err, rows) => {
                         if (err) {
                             throw err;

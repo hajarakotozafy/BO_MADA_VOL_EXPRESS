@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const connection = require('./controller/connection.js')
 
 const avionRoutes = require('./routes/avionRoutes');
 const volRoutes = require('./routes/volRoutes');
@@ -14,6 +15,18 @@ app.use(express.json());
 
 app.post('/api/login', (req, res) => {
     login(req, res);
+});
+
+app.get('/api/recette', (req, res) => {
+	let avions;
+	let recette;
+	connection.query("SELECT avion.designation AS designation, COUNT(reservation.numAvion)*vol.frais as recette FROM avion, vol, reservation WHERE avion.numAvion = reservation.numAvion AND vol.numVol = reservation.numVol GROUP BY avion.numAvion", (err, rows) => {
+	if(err) throw err;
+	else {
+		res.status(200).send(rows);
+	}})
+
+	
 });
 
 app.use('/api/avion', avionRoutes);

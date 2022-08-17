@@ -4,7 +4,7 @@ const { getPlaces, getFreePlace, getFreePlaceNumber, getNotFreePlaceNumber } = r
 
 const router = express.Router();
 
-router.get('/', getPlaces);//lister toutes les places
+router.get('/:id', getPlaces);//lister toutes les places
 router.get('/notOccuped', getFreePlace);//lister les places libres
 router.get('/free/number/:numAvion', getFreePlaceNumber);//récuperer le nombre des places libres par avion
 router.get('/not/free/number/:numAvion', getNotFreePlaceNumber);//récuperer le nombre des places occupées par avion
